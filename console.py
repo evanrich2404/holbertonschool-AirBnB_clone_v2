@@ -115,14 +115,25 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        if not args:
+        cls = args.partition(' ')[0]
+        if not cls:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        elif cls not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+        param_string = args.partition(' ')[2]
+        param_dict = {}
+        while param_string:
+            #We have parameters, they now need to be tokenized.
+            param_strings = param_string.partition(' ')
+            curr_param = param_strings[0]
+            param_data = curr_param.partition('=')
+            param_dict[param_data[0]] = HBNBCommand.get_value(param_data[2])
+            param_string = param_strings[2]
+        new_instance = HBNBCommand.classes[cls]()
         storage.save()
+        new_instance.__dict__.update(param_dict)
         print(new_instance.id)
         storage.save()
 
@@ -319,6 +330,18 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
+    def get_value(input_str):
+        num = None
+        try:
+            num = float(input_str)               # if flaot fails num will be None
+            res = int(input_str)
+        except ValueError:
+                res = num or str(input_str)      # if int failed, num won't be None,
+        if type(res) is str:
+            res = res.replace("_",' ')
+
+        return res
 
 
 if __name__ == "__main__":
