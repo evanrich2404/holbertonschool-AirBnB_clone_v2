@@ -33,7 +33,6 @@ class FileStorage:
             return
         
         key_val = "{}.{}".format(type(obj).__name__, obj.id)
-        print(key_val)
         if FileStorage.__objects.get(key_val) is not None:
             del FileStorage.__objects[key_val]
         self.save()
