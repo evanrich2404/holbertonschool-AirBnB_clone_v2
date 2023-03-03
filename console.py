@@ -125,15 +125,14 @@ class HBNBCommand(cmd.Cmd):
         param_string = args.partition(' ')[2]
         param_dict = {}
         while param_string:
-            #We have parameters, they now need to be tokenized.
             param_strings = param_string.partition(' ')
             curr_param = param_strings[0]
             param_data = curr_param.partition('=')
             try:
                 val = HBNBCommand.get_value(param_data[2])
                 param_dict[param_data[0]] = val
-            except:
-              pass
+            except TypeError:
+                pass
             param_string = param_strings[2]
         new_instance = HBNBCommand.classes[cls]()
         storage.save()
@@ -339,14 +338,14 @@ class HBNBCommand(cmd.Cmd):
         """attempts to turn a string to number"""
         num = None
         try:
-            num = float(input_str)               # if flaot fails num will be None
+            num = float(input_str)           # if flaot fails num will be None
             res = int(input_str)
         except ValueError:
-                res = num or str(input_str)      # if int failed, num won't be None,
+            res = num or str(input_str)  # if int failed, num won't be None,
         if type(res) is str:
             if (res[0] != res[-1] or res[0] != '"'):
                 raise TypeError('Not Implmented')
-            res = res.replace("_",' ')
+            res = res.replace("_", ' ')
             res = res.strip('"')
 
         return res
