@@ -338,7 +338,7 @@ class HBNBCommand(cmd.Cmd):
         """attempts to turn a string to number"""
         num = None
         try:
-            num = float(input_str)           # if float fails num will be None
+            num = float(input_str)          # if float fails num will be None
             res = int(input_str)
         except ValueError:
             res = num or str(input_str)     # if int failed, num won't be None,
