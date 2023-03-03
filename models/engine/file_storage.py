@@ -31,9 +31,13 @@ class FileStorage:
         """Delete obj From dictionary"""
         if obj is None:
             return
-        key_val = "{}.{}".format(str(type(obj)), obj.id)
+        
+        key_val = "{}.{}".format(type(obj).__name__, obj.id)
+        print(key_val)
         if FileStorage.__objects.get(key_val) is not None:
             del FileStorage.__objects[key_val]
+        self.save()
+
 
     def reload(self):
         """Loads storage dictionary from file"""
