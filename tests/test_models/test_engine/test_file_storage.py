@@ -42,6 +42,7 @@ class test_fileStorage(unittest.TestCase):
         self.assertIsInstance(temp, dict)
     
     def test_all_class(self):
+        """__objects are all correct type"""
         temp = storage.all(BaseModel)
         for tObj in temp:
             self.assertEqual(type(tObj),BaseModel)
