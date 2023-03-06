@@ -1,9 +1,15 @@
 #!/usr/bin/python3
 """This module defines a class to manage sql storage for hbnb clone"""
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy.orm import relationship
 from models.base_model import Base
+from models.user import User
+from models.state import State
+from models.city import City
+from models.place import Place
+from models.amenity import Amenity
+from models.review import Review
 import os
 
 
@@ -13,7 +19,7 @@ class DBStorage:
 
     def __init__(self):
         """init engine"""
-        data = []
+        data = [0,0,0,0]
         data[0] = os.getenv("HBNB_MYSQL_USER")
         data[1] = os.getenv('HBNB_MYSQL_PWD')
         data[2] = os.getenv('HBNB_MYSQL_HOST') or 'localhost'
@@ -23,16 +29,23 @@ class DBStorage:
             "mysql+mysqldb://{0}:{1}@{2}/{3}"
             .format(data[0], data[1], data[2], data[3]),
             pool_pre_ping=True)
-        self.reload()
         if (os.getenv('HBNB_ENV') == 'test'):
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
         """query on the database"""
         if cls is None:
-            return self.__session.query(Base).all()
+            all_classes = [State, City]
+            temp = []
+            for c in all_classes:
+                temp.extend(self.__session.query(c).all())
         else:
-            return self.__session.query(cls).all()
+            temp = self.__session.query(cls).all()
+        new_dict = {}
+        for obj in temp:
+            key = "{}.{}".format(type(obj).__name__, obj.id)
+            new_dict[key] = obj
+        return new_dict
 
     def new(self, obj):
         """add the object to the database"""
@@ -49,12 +62,7 @@ class DBStorage:
 
     def reload(self):
         """create all tables in the database"""
-        from models.user import User
-        from models.state import State
-        from models.city import City
-        from models.place import Place
-        from models.amenity import Amenity
-        from models.review import Review
         Base.metadata.create_all(self.__engine)
-        self.__session = sessionmaker(bind=self.__engine)(
-                expire_on_commit=False, scoped_session=False)
+        session_temp = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        Session = scoped_session(session_temp)
+        self.__session = Session()
