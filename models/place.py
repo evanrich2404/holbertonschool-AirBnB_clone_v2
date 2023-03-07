@@ -63,18 +63,3 @@ class Place(BaseModel, Base):
             """setter for amenities """
             if type(obj).__name__ == 'Amenity':
                 self.amenity_ids.append(obj.id)
-
-    def __init__(self, *args, **kwargs):
-        """initializes Place"""
-        if (os.getenv('HBNB_TYPE_STORAGE') != 'db'):
-            self.city_id = ""
-            self.user_id = ""
-            self.name = ""
-            self.description = ""
-            self.number_rooms = 0
-            self.number_bathrooms = 0
-            self.max_guest = 0
-            self.price_by_night = 0
-            self.latitude = 0.0
-            self.longitude = 0.0
-        super().__init__(*args, **kwargs)
