@@ -35,3 +35,31 @@ class Place(BaseModel, Base):
                 if value.place_id == self.id:
                     reviews.append(value)
             return reviews
+
+    place_amenity = \
+        Table('place_amenity', Base.metadata, Column(
+            'place_id', String(60), ForeignKey('places.id'),
+            primary_key=True, nullable=False),
+             Column('amenity_id', String(60), ForeignKey('amenities.id'),
+                    primary_key=True, nullable=False))
+
+    if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+        amenities = relationship(
+            "Amenity", secondary=place_amenity, viewonly=False)
+    else:
+        @property
+        def amenities(self):
+            """getter for amenities """
+            from models import storage
+            from models.amenity import Amenity
+            amenities = []
+            for key, value in storage.all(Amenity).items():
+                if value.id in self.amenity_ids:
+                    amenities.append(value)
+            return amenities
+
+        @amenities.setter
+        def amenities(self, obj):
+            """setter for amenities """
+            if type(obj).__name__ == 'Amenity':
+                self.amenity_ids.append(obj.id)
