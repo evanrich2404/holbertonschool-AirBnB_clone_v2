@@ -5,6 +5,14 @@ from sqlalchemy import Column, String, Integer, Float, ForeignKey, Table
 import os
 
 
+place_amenity = Table('place_amenity',
+                    Base.metadata,
+                    Column(
+                        'place_id', String(60), ForeignKey('places.id'),
+                        primary_key=True, nullable=False),
+                    Column('amenity_id', String(60), ForeignKey('amenities.id'),
+                        primary_key=True, nullable=False))
+
 class Place(BaseModel, Base):
     """ A place to stay """
     __tablename__ = "places"
@@ -35,13 +43,6 @@ class Place(BaseModel, Base):
                 if value.place_id == self.id:
                     reviews.append(value)
             return reviews
-
-    place_amenity = \
-        Table('place_amenity', Base.metadata, Column(
-            'place_id', String(60), ForeignKey('places.id'),
-            primary_key=True, nullable=False),
-             Column('amenity_id', String(60), ForeignKey('amenities.id'),
-                    primary_key=True, nullable=False))
 
     if os.getenv('HBNB_TYPE_STORAGE') == 'db':
         amenities = relationship(

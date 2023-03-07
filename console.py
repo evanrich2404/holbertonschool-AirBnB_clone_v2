@@ -134,9 +134,8 @@ class HBNBCommand(cmd.Cmd):
             except TypeError:
                 pass
             param_string = param_strings[2]
-        new_instance = HBNBCommand.classes[cls]()
+        new_instance = HBNBCommand.classes[cls](**param_dict)
         storage.save()
-        new_instance.__dict__.update(param_dict)
         print(new_instance.id)
         new_instance.save()
 
