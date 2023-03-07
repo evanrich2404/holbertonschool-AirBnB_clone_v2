@@ -18,7 +18,7 @@ class DBStorage:
 
     def __init__(self):
         """init engine"""
-        data = [0,0,0,0]
+        data = [0, 0, 0, 0]
         data[0] = os.getenv("HBNB_MYSQL_USER")
         data[1] = os.getenv('HBNB_MYSQL_PWD')
         data[2] = os.getenv('HBNB_MYSQL_HOST') or 'localhost'
