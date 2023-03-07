@@ -3,6 +3,7 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship
+import os
 
 
 class Amenity(BaseModel, Base):
@@ -12,5 +13,7 @@ class Amenity(BaseModel, Base):
     place_amenities = relationship("Place", secondary="place_amenity")
 
     def __init__(self, *args, **kwargs):
-        self.name = ""
+        """ initializes amenity """
+        if (os.getenv('HBNB_TYPE_STORAGE') != 'db'):
+            self.name = ""
         super().__init__(*args, **kwargs)

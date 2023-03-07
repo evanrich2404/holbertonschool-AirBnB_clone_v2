@@ -3,6 +3,7 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship
+import os
 
 
 class Review(BaseModel, Base):
@@ -14,7 +15,8 @@ class Review(BaseModel, Base):
 
     def __init__(self, *args, **kwargs):
         """initializes Review"""
-        self.place_id = ""
-        self.user_id = ""
-        self.text = ""
+        if (os.getenv('HBNB_TYPE_STORAGE') != 'db'):
+            self.place_id = ""
+            self.user_id = ""
+            self.text = ""
         super().__init__(self, *args, **kwargs)

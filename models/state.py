@@ -27,5 +27,7 @@ class State(BaseModel, Base):
             return list_cities
 
     def __init__(self, *args, **kwargs):
-        self.name = ""
+        """ initializes state """
+        if (os.getenv('HBNB_TYPE_STORAGE') != 'db'):
+            self.name = ""
         super().__init__(*args, **kwargs)
