@@ -14,11 +14,12 @@ if os.getenv('HBNB_TYPE_STORAGE') == 'db':
 
         if os.getenv('HBNB_TYPE_STORAGE') == 'db':
             from sqlalchemy.orm import relationship
-            cities = relationship("City", backref="state", cascade="all, delete")
+            cities = relationship("City", backref="state",
+                                  cascade="all, delete")
         else:
             @property
             def cities(self):
-                """getter attribute cities that returns the list of City instances
+                """getter attribute cities that returns the list of City
                 with state_id equals to the current State.id"""
                 from models import storage
                 list_cities = []
