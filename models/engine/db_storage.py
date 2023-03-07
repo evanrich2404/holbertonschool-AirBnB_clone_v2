@@ -2,7 +2,6 @@
 """This module defines a class to manage sql storage for hbnb clone"""
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
-from sqlalchemy.orm import relationship
 from models.base_model import Base
 from models.user import User
 from models.state import State
