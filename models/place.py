@@ -66,7 +66,6 @@ class Place(BaseModel, Base):
 
     def __init__(self, *args, **kwargs):
         """initializes Place"""
-        super().__init__(*args, **kwargs)
         self.city_id = ""
         self.user_id = ""
         self.name = ""
@@ -77,3 +76,4 @@ class Place(BaseModel, Base):
         self.price_by_night = 0
         self.latitude = 0.0
         self.longitude = 0.0
+        super().__init__(*args, **kwargs)
