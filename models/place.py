@@ -7,12 +7,13 @@ import os
 if os.getenv('HBNB_TYPE_STORAGE') == 'db':
     from sqlalchemy.orm import relationship
     place_amenity = Table('place_amenity',
-                        Base.metadata,
-                        Column(
+                          Base.metadata,
+                          Column(
                             'place_id', String(60), ForeignKey('places.id'),
                             primary_key=True, nullable=False),
-                        Column('amenity_id', String(60), ForeignKey('amenities.id'),
-                            primary_key=True, nullable=False))
+                          Column('amenity_id', String(60),
+                                 ForeignKey('amenities.id'),
+                                 primary_key=True, nullable=False))
 
     class Place(BaseModel, Base):
         """ A place to stay """
@@ -29,14 +30,12 @@ if os.getenv('HBNB_TYPE_STORAGE') == 'db':
         longitude = Column(Float, nullable=True)
         amenity_ids = []
 
-      
- 
         reviews = relationship(
             "Review", backref="place", cascade="all, delete")
-        
+
         amenities = relationship(
             "Amenity", secondary=place_amenity, viewonly=False)
-        
+
 else:
     class Place(BaseModel):
         """ A place to stay """
@@ -62,6 +61,7 @@ else:
                 if value.place_id == self.id:
                     reviews.append(value)
             return reviews
+
         @property
         def amenities(self):
             """getter for amenities """
