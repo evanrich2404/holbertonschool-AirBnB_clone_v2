@@ -11,5 +11,5 @@ if(os.getenv('HBNB_TYPE_STORAGE') == 'db'):
 else:
     storage = FileStorage()
 
-if(storage):
-    storage.reload()
+
+storage.reload()
