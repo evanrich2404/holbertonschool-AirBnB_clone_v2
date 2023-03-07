@@ -34,7 +34,7 @@ class DBStorage:
     def all(self, cls=None):
         """query on the database"""
         if cls is None:
-            all_classes = [State, City]
+            all_classes = [State, City, Amenity, Place, Review, User]
             temp = []
             for c in all_classes:
                 temp.extend(self.__session.query(c).all())
