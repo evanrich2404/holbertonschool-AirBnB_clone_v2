@@ -9,7 +9,7 @@ import os
 class State(BaseModel, Base):
     """ State class """
     __tablename__ = "states"
-    name = Column(String(128), nullable=False)
+    name = Column(String(128), nullable=False, default="")
 
     if os.getenv('HBNB_TYPE_STORAGE') == 'db':
         from sqlalchemy.orm import relationship
