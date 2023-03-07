@@ -6,8 +6,13 @@ from sqlalchemy.orm import relationship
 import os
 
 
-class Amenity(BaseModel, Base):
-    """ Amenity class """
-    __tablename__ = "amenities"
-    name = Column(String(128), nullable=False)
-    place_amenities = relationship("Place", secondary="place_amenity")
+if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+    class Amenity(BaseModel, Base):
+        """ Amenity class """
+        __tablename__ = "amenities"
+        name = Column(String(128), nullable=False)
+        place_amenities = relationship("Place", secondary="place_amenity")
+else:
+    class Amenity(BaseModel):
+        """ Amenity class """
+        name = ""
