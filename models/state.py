@@ -25,3 +25,7 @@ class State(BaseModel, Base):
                 if value.state_id == self.id:
                     list_cities.append(value)
             return list_cities
+
+    def __init__(self, *args, **kwargs):
+        self.name = ""
+        super().__init__(*args, **kwargs)

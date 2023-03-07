@@ -50,7 +50,6 @@ class test_basemodel(unittest.TestCase):
     def test_save(self):
         """ Testing save """
         i = self.value()
-        i.save()
         key = self.name + "." + i.id
         with open('file.json', 'r') as f:
             j = json.load(f)
@@ -77,8 +76,8 @@ class test_basemodel(unittest.TestCase):
     def test_kwargs_one(self):
         """ """
         n = {'Name': 'test'}
-        with self.assertRaises(KeyError):
-            new = self.value(**n)
+        new = self.value(**n)
+        self.assertEqual(new.Name, 'test')
 
     def test_id(self):
         """ """

@@ -11,3 +11,9 @@ class City(BaseModel, Base):
     name = Column(String(128), nullable=False)
     state_id = Column(String(60), ForeignKey("states.id"), nullable=False)
     places = relationship("Place", backref="cities", cascade="all, delete")
+
+    def __init__(self, *args, **kwargs):
+        """initializes city"""
+        self.name = ""
+        self.state_id = ""
+        super().__init__(*args, **kwargs)
