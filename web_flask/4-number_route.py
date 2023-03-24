@@ -39,6 +39,8 @@ def number(n):
     """display n is a number only if n is an integer"""
     if n.isdigit():
         return '{} is a number'.format(n)
+    else:
+        return
 
 
 if __name__ == '__main__':
