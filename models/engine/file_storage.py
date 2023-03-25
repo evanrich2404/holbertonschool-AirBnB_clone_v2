@@ -1,19 +1,33 @@
 #!/usr/bin/python3
 """This module defines a class to manage file storage for hbnb clone"""
 import json
+from models import base_model, user, state, city, amenity, place, review
 
 
 class FileStorage:
     """This class manages storage of hbnb models in JSON format"""
     __file_path = 'file.json'
     __objects = {}
+    MODLS = {
+        'City': city.City,
+        'State': state.State,
+        'User': user.User,
+        'Place': place.Place,
+        'Amenity': amenity.Amenity,
+        'Review': review.Review,
+    }
 
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
         if cls is None:
-            return FileStorage.__objects
-        return {k: v for k, v in FileStorage.__objects.items()
-                if type(v) is cls}
+            if cls in self.MODLS.keys():
+                cls = self.MODLS.get(cls)
+            nice_dict = {}
+            for ky, vl in self.__objects.items():
+                if cls == type(vl):
+                    nice_dict[ky] = vl
+            return nice_dict
+        return self.__objects
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
@@ -30,13 +44,11 @@ class FileStorage:
 
     def delete(self, obj=None):
         """Delete obj From dictionary"""
-        if obj is None:
-            return
-
-        key_val = "{}.{}".format(type(obj).__name__, obj.id)
-        if FileStorage.__objects.get(key_val) is not None:
-            del FileStorage.__objects[key_val]
-        self.save()
+        try:
+            key = obj.__class__.__name__ + "." + obj.id
+            del self.__objects[key]
+        except (AttributeError, KeyError):
+            pass
 
     def reload(self):
         """Loads storage dictionary from file"""

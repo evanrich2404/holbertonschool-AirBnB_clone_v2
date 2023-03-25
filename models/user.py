@@ -1,14 +1,17 @@
 #!/usr/bin/python3
 """This module defines a class User"""
+import hashlib
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
-import os
+from os import getenv
+storage_type = getenv("HBNB_TYPE_STORAGE")
 
 
-if os.getenv('HBNB_TYPE_STORAGE') == 'db':
-    class User(BaseModel, Base):
-        """This class defines a user by various attributes"""
+
+class User(BaseModel, Base):
+    """This class defines a user by various attributes"""
+    if storage_type == "db":
         __tablename__ = 'users'
         email = Column(String(128), nullable=False)
         password = Column(String(128), nullable=False)
@@ -16,10 +19,23 @@ if os.getenv('HBNB_TYPE_STORAGE') == 'db':
         last_name = Column(String(128), nullable=True)
         places = relationship("Place", backref="user", cascade="all, delete")
         reviews = relationship("Review", backref="user", cascade="all, delete")
-else:
-    class User(BaseModel):
-        """This class defines a user by various attributes"""
+    else:
         email = ''
         password = ''
         first_name = ''
         last_name = ''
+
+    def __init__(self, *args, **kwargs):
+        """instantiates user"""
+        if kwargs:
+            pwd = kwargs.pop('password', None)
+            if pwd:
+                User.__set_password(self, pwd)
+        super().__init__(*args, **kwargs)
+
+    def __set_password(self, pwd):
+        """sets password with encryption to MD5"""
+        secure = hashlib.md5()
+        secure.update(pwd.encode("utf-8"))
+        secure_pwd = secure.hexdigest()
+        setattr(self, 'password', secure_pwd)

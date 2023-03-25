@@ -1,44 +1,28 @@
 #!/usr/bin/python3
 """ State Module for HBNB project """
+import models
 from models.base_model import BaseModel, Base
-from models.city import City
 from sqlalchemy import Column, String
-import os
+from sqlalchemy.orm import relationship
+from os import getenv
+storage_type = getenv("HBNB_TYPE_STORAGE")
 
 
-if os.getenv('HBNB_TYPE_STORAGE') == 'db':
-    class State(BaseModel, Base):
-        """ State class """
+class State(BaseModel, Base):
+    """ State class """
+    if storage_type == "db":
         __tablename__ = "states"
         name = Column(String(128), nullable=False)
+        cities = relationship("City", backref="state", cascade="delete")
 
-        if os.getenv('HBNB_TYPE_STORAGE') == 'db':
-            from sqlalchemy.orm import relationship
-            cities = relationship("City", backref="state",
-                                  cascade="all, delete")
-        else:
-            @property
-            def cities(self):
-                """getter attribute cities that returns the list of City
-                with state_id equals to the current State.id"""
-                from models import storage
-                list_cities = []
-                for key, value in storage.all(City).items():
-                    if value.state_id == self.id:
-                        list_cities.append(value)
-                return list_cities
-else:
-
-    class State(BaseModel):
-        '''File Storage State Class'''
+    else:
         name = ""
+
         @property
         def cities(self):
-            """getter attribute cities that returns the list of City
-            with state_id equals to the current State.id"""
-            from models import storage
-            list_cities = []
-            for key, value in storage.all(City).items():
-                if value.state_id == self.id:
-                    list_cities.append(value)
-            return list_cities
+            """getter for cities """
+            cities = []
+            for city in models.storage.all("City").values():
+                if city.state_id == self.id:
+                    cities.append(city)
+            return cities
