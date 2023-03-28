@@ -3,7 +3,7 @@
 import cmd
 import sys
 from models.base_model import BaseModel
-from models.__init__ import storage
+from models import storage
 from models.user import User
 from models.place import Place
 from models.state import State
@@ -332,23 +332,6 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
-
-    def get_value(input_str):
-        """attempts to turn a string to number"""
-        num = None
-        try:
-            num = float(input_str)          # if float fails num will be None
-            res = int(input_str)
-        except ValueError:
-            res = num or str(input_str)     # if int failed, num won't be None,
-        if type(res) is str:
-            if (res[0] != res[-1] or res[0] != '"'):
-                raise TypeError('Not Implmented')
-            res = res.replace("_", ' ')
-            res = res.strip('"')
-
-        return res
-
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
