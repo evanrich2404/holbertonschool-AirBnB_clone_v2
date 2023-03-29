@@ -1,5 +1,6 @@
 #!/usr/bin/python3
-"""This module defines a base class for all models in our hbnb clone"""
+"""This module defines a class BaseModel to be used by all the other classes
+in the project."""
 import models
 from uuid import uuid4
 from datetime import datetime
@@ -16,7 +17,8 @@ else:
 
 
 class BaseModel:
-    """A base class for all hbnb models"""
+    """This is the base model class for all other classes in the project.
+    It includes common attributes and methods for all models to inherit."""
     if storage_type == "db":
         id = Column(String(60), nullable=False, primary_key=True)
         created_at = Column(DateTime, nullable=False,
@@ -25,7 +27,13 @@ class BaseModel:
                             default=datetime.utcnow())
 
     def __init__(self, *args, **kwargs):
-        """Instatntiates a new model"""
+        """Initialize a new instance of the BaseModel class.
+
+        Args:
+            id (str): A UUID unique identifier for the instance.
+            created_at (datetime): The datetime when the instance was created.
+            updated_at (datetime): The datetime when the instance was updated.
+        """
         if not kwargs:
             kwargs = {}
         kwargs.setdefault('id', str(uuid4()))
@@ -48,13 +56,13 @@ class BaseModel:
         return '[{}] ({}) {}'.format(cls, self.id, self.__dict__)
 
     def save(self):
-        """Updates updated_at with current time when instance is changed"""
+        """Update the updated_at attribute with the current datetime."""
         self.updated_at = datetime.utcnow()
         models.storage.new(self)
         models.storage.save()
 
     def to_dict(self):
-        """Convert instance into dict format"""
+        """Return a dictionary representation of the instance."""
         cls_name = self.__class__.__name__
         dictionary = {
             k: v if type(v) == str else str(v)

@@ -1,5 +1,11 @@
 #!/usr/bin/python3
-"""This module defines a class to manage sql storage for hbnb clone"""
+"""
+The DB storage module provides a way to store and retrieve data from a SQL
+database using SQLAlchemy. It defines classes for each model in the application
+and provides methods for adding, updating, and deleting objects in the
+database. It also supports querying the database to retrieve objects based on
+various criteria.
+"""
 from os import getenv
 from sqlalchemy import create_engine, inspect, MetaData
 from sqlalchemy.orm import sessionmaker, scoped_session

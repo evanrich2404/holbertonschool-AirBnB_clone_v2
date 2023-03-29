@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" Review module for the HBNB project """
+""" Module that represents the Review class """
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, ForeignKey
 from os import getenv

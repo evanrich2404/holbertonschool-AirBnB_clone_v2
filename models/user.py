@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""This module defines a class User"""
+""" Module that represents the User class """
 import hashlib
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String

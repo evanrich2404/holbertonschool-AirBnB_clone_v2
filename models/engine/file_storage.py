@@ -1,5 +1,11 @@
 #!/usr/bin/python3
-"""This module defines a class to manage file storage for hbnb clone"""
+"""
+The File storage module provides a way to store and retrieve data from a file
+system. It defines a class that manages the storage of objects in JSON format
+in a specified directory. It provides methods for adding, updating, and
+deleting objects, as well as querying the stored data to retrieve objects based
+on various criteria.
+"""
 import json
 from models import base_model, user, state, city, amenity, place, review
 
