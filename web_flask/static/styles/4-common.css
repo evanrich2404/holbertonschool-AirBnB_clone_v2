@@ -1,0 +1,24 @@
+Body {
+    color: #484848;
+    font-family: Circular, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 30px auto;
+}
+
+section {
+    display: block;
+}
+
+button {
+    font-size: 18px;
+}
+
+button:hover {
+    opacity: 0.9;
+}
